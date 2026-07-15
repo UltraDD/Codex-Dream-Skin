@@ -1,0 +1,591 @@
+/* Clean light shell — banner carries color; UI stays airy and neutral. */
+:root.codex-dream-skin {
+  color-scheme: light !important;
+  --ds-bg: #f7f4f5;
+  --ds-panel: #ffffff;
+  --ds-panel-2: #fff7f8;
+  --ds-green: #d94856;
+  --ds-lime: #e86b78;
+  --ds-cyan: #ef9aa3;
+  --ds-purple: #c93d4c;
+  --ds-text: #1f1a1b;
+  --ds-muted: #6b5f62;
+  --ds-line: rgba(196, 120, 128, .22);
+  --ds-soft: rgba(255, 255, 255, .88);
+  --ds-card: #ffffff;
+  --ds-ink-soft: #3d3437;
+}
+
+html.codex-dream-skin body {
+  background:
+    radial-gradient(circle at 92% 0%, rgba(255, 210, 216, .35), transparent 32%),
+    linear-gradient(180deg, #fbf8f9 0%, #f4f0f1 100%) !important;
+  color: var(--ds-text) !important;
+  font-family: "SF Pro Text", "PingFang SC", "Microsoft YaHei UI", system-ui, sans-serif !important;
+}
+
+html.codex-dream-skin body::before {
+  content: none !important;
+}
+
+/* Sidebar: quiet paper, not a second dark theme */
+html.codex-dream-skin aside.app-shell-left-panel {
+  background: linear-gradient(180deg, #ffffff 0%, #fbf7f8 100%) !important;
+  border: 1px solid rgba(40, 30, 32, .08) !important;
+  border-left: 0 !important;
+  border-radius: 0 16px 16px 0 !important;
+  box-shadow: 8px 0 24px rgba(40, 20, 24, .04) !important;
+  backdrop-filter: none !important;
+  color: #1f1a1b !important;
+}
+
+html.codex-dream-skin aside.app-shell-left-panel nav {
+  background: transparent !important;
+  color: #1f1a1b !important;
+}
+
+/* Force readable nav labels — avoid washed-out token colors on light shell */
+html.codex-dream-skin aside.app-shell-left-panel,
+html.codex-dream-skin aside.app-shell-left-panel * {
+  --tw-text-opacity: 1;
+}
+
+html.codex-dream-skin aside.app-shell-left-panel button,
+html.codex-dream-skin aside.app-shell-left-panel a,
+html.codex-dream-skin aside.app-shell-left-panel span,
+html.codex-dream-skin aside.app-shell-left-panel div,
+html.codex-dream-skin aside.app-shell-left-panel p,
+html.codex-dream-skin aside.app-shell-left-panel label {
+  color: #2a2325 !important;
+}
+
+html.codex-dream-skin aside.app-shell-left-panel svg {
+  color: #5a5053 !important;
+  opacity: 1 !important;
+}
+
+html.codex-dream-skin aside.app-shell-left-panel button {
+  color: #2a2325 !important;
+  opacity: 1 !important;
+  transition: background .14s ease, color .14s ease !important;
+}
+
+html.codex-dream-skin aside.app-shell-left-panel button:hover {
+  background: rgba(217, 72, 86, .08) !important;
+  box-shadow: none !important;
+  transform: none !important;
+  color: #1f1a1b !important;
+}
+
+html.codex-dream-skin aside.app-shell-left-panel button[aria-label^="切换模式"] {
+  background: transparent !important;
+  border-color: transparent !important;
+  font-family: "SF Pro Display", "Segoe UI", system-ui, sans-serif !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  color: #1f1a1b !important;
+  text-shadow: none !important;
+  opacity: 1 !important;
+}
+
+html.codex-dream-skin aside.app-shell-left-panel button[aria-label^="切换模式"]::after {
+  content: none;
+}
+
+html.codex-dream-skin aside.app-shell-left-panel [class~="bg-token-list-hover-background"],
+html.codex-dream-skin aside.app-shell-left-panel [aria-current="page"] {
+  background: rgba(217, 72, 86, .10) !important;
+  border: 1px solid rgba(217, 72, 86, .14) !important;
+  box-shadow: none !important;
+  color: #1f1a1b !important;
+}
+
+html.codex-dream-skin aside.app-shell-left-panel [aria-current="page"] span,
+html.codex-dream-skin aside.app-shell-left-panel [aria-current="page"] * {
+  color: #1f1a1b !important;
+}
+
+/* Main surface: soft white frame so banner art can breathe */
+html.codex-dream-skin main.main-surface {
+  background: linear-gradient(180deg, #fcfafb 0%, #f7f3f4 100%) !important;
+  border: 1px solid rgba(40, 30, 32, .06) !important;
+  border-right: 0 !important;
+  border-bottom: 0 !important;
+  border-radius: 16px 0 0 0 !important;
+  box-shadow: inset 0 1px rgba(255, 255, 255, .9) !important;
+  overflow: hidden !important;
+}
+
+html.codex-dream-skin main.main-surface:not(.dream-skin-home-shell) {
+  background:
+    linear-gradient(90deg, rgba(252, 250, 251, .96) 0%, rgba(252, 250, 251, .88) 42%, rgba(252, 250, 251, .55) 100%),
+    var(--dream-skin-art) 78% center / cover no-repeat !important;
+}
+
+html.codex-dream-skin main.main-surface:not(.dream-skin-home-shell) [role="main"] {
+  background: transparent !important;
+  text-shadow: none !important;
+}
+
+html.codex-dream-skin main.main-surface:not(.dream-skin-home-shell) article {
+  border: 1px solid rgba(40, 30, 32, .06);
+  background: rgba(255, 255, 255, .82);
+  box-shadow: 0 8px 20px rgba(40, 20, 24, .05);
+  backdrop-filter: blur(10px) saturate(108%);
+}
+
+html.codex-dream-skin main.main-surface > header.app-header-tint {
+  background: rgba(255, 255, 255, .82) !important;
+  border-bottom: 1px solid rgba(40, 30, 32, .06) !important;
+  backdrop-filter: blur(12px) !important;
+}
+
+/* Chrome chrome: restrained branding */
+#codex-dream-skin-chrome {
+  position: fixed;
+  z-index: 31;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: 16px 0 0 0;
+}
+
+.dream-skin-brand {
+  position: absolute;
+  left: 22px;
+  top: 4px;
+  height: 36px;
+  display: none;
+  align-items: center;
+  gap: 8px;
+  color: var(--ds-text);
+}
+
+#codex-dream-skin-chrome.dream-skin-home-shell .dream-skin-brand { display: flex; }
+
+.dream-skin-portal-mark {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(226, 85, 99, .35);
+  border-radius: 50%;
+  color: var(--ds-green);
+  font-size: 14px;
+  box-shadow: none;
+  background: rgba(255, 255, 255, .7);
+}
+.dream-skin-brand b {
+  display: block;
+  color: var(--ds-text);
+  font-size: 13px;
+  letter-spacing: .02em;
+  font-weight: 700;
+}
+.dream-skin-brand small {
+  display: block;
+  margin-top: 1px;
+  color: var(--ds-muted);
+  font-size: 9px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.dream-skin-status {
+  position: absolute;
+  right: 86px;
+  top: 12px;
+  display: none;
+  align-items: center;
+  gap: 6px;
+  color: var(--ds-muted);
+  font: 600 10px/1 "SF Mono", Menlo, monospace;
+  letter-spacing: .12em;
+}
+.dream-skin-status i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ds-green);
+  box-shadow: 0 0 0 3px rgba(226, 85, 99, .12);
+}
+#codex-dream-skin-chrome.dream-skin-home-shell .dream-skin-status { display: flex; }
+
+/* Quote: refined serif italic, clear of composer/send */
+.dream-skin-quote {
+  position: absolute;
+  right: 28px;
+  bottom: 122px;
+  display: none;
+  max-width: min(280px, 42%);
+  color: #5c5356;
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, "Times New Roman", Georgia, serif;
+  font-style: italic;
+  font-size: 13.5px;
+  line-height: 1.35;
+  font-weight: 400;
+  letter-spacing: .02em;
+  word-spacing: .04em;
+  text-transform: none;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .95);
+  transform: none;
+  white-space: nowrap;
+  text-align: right;
+  opacity: .92;
+}
+#codex-dream-skin-chrome.dream-skin-home-shell .dream-skin-quote { display: block; }
+
+/* Sponsor chip: compact pill, clear hierarchy */
+.dream-skin-promo {
+  position: absolute;
+  right: 22px;
+  bottom: 152px;
+  z-index: 40;
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  min-width: 0;
+  max-width: 210px;
+  padding: 7px 12px 7px 11px;
+  border-radius: 999px;
+  border: 1px solid rgba(40, 30, 32, .08);
+  background: rgba(255, 255, 255, .94);
+  box-shadow: 0 4px 14px rgba(40, 20, 24, .06);
+  color: #2a2325;
+  text-decoration: none;
+  pointer-events: auto;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+}
+#codex-dream-skin-chrome.dream-skin-home-shell .dream-skin-promo { display: flex; }
+.dream-skin-promo strong {
+  color: #c93d4c;
+  font: 600 11.5px/1.25 "SF Pro Text", "PingFang SC", "Helvetica Neue", system-ui, sans-serif;
+  letter-spacing: .01em;
+}
+.dream-skin-promo span {
+  color: #8a7f82;
+  font: 500 10px/1.2 "SF Pro Text", "PingFang SC", "Helvetica Neue", system-ui, sans-serif;
+  letter-spacing: .04em;
+}
+.dream-skin-promo:hover {
+  border-color: rgba(201, 61, 76, .28);
+  box-shadow: 0 6px 16px rgba(40, 20, 24, .09);
+  transform: translateY(-1px);
+}
+.dream-skin-promo:hover strong { color: #b83240; }
+
+@media (max-height: 820px) {
+  .dream-skin-quote { bottom: 112px; right: 24px; }
+  #codex-dream-skin-chrome.dream-skin-home-shell .dream-skin-promo { bottom: 140px; }
+}
+
+/* Less sparkle noise */
+.dream-skin-particles { display: none !important; }
+.dream-skin-orbit { display: none !important; }
+
+html.codex-dream-skin [role="main"] {
+  background: transparent !important;
+  scrollbar-color: rgba(226, 85, 99, .28) transparent;
+}
+
+html.codex-dream-skin .dream-skin-home {
+  --thread-content-max-width: min(950px, calc(100cqw - 44px)) !important;
+  overflow-x: hidden !important;
+}
+
+.dream-skin-home > div:first-child {
+  padding-top: 14px !important;
+  min-height: 100% !important;
+}
+
+.dream-skin-home > div:first-child > div:first-child {
+  flex: 0 0 420px !important;
+  min-height: 420px !important;
+  align-items: flex-start !important;
+  padding-bottom: 0 !important;
+}
+
+/* Hero: let the art show; soft left veil for readable title */
+.dream-skin-home > div:first-child > div:first-child > div:first-child {
+  position: relative !important;
+  isolation: isolate;
+  width: calc(100% - 44px) !important;
+  max-width: none !important;
+  height: 252px !important;
+  min-height: 252px !important;
+  flex: 0 1 auto !important;
+  padding: 0 !important;
+  border: 1px solid rgba(40, 30, 32, .08) !important;
+  border-radius: 22px !important;
+  overflow: hidden !important;
+  background-color: #f7ecee !important;
+  background-image:
+    linear-gradient(90deg, rgba(255, 252, 253, .78) 0%, rgba(255, 252, 253, .42) 34%, rgba(255, 252, 253, .08) 58%, transparent 78%),
+    var(--dream-skin-art) !important;
+  background-repeat: no-repeat !important;
+  background-size: 100% 100%, cover !important;
+  background-position: center, right center !important;
+  box-shadow: 0 14px 32px rgba(40, 20, 24, .08) !important;
+}
+
+.dream-skin-home > div:first-child > div:first-child > div:first-child::before {
+  content: none !important;
+}
+
+.dream-skin-home > div:first-child > div:first-child > div:first-child > div:first-child {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  padding-left: 34px;
+}
+
+.dream-skin-home > div:first-child > div:first-child > div:first-child > div:first-child > div:first-child {
+  width: 52% !important;
+  align-items: flex-start !important;
+  gap: 0 !important;
+}
+
+.dream-skin-home [data-testid="home-icon"] { display: none !important; }
+
+.dream-skin-home [data-feature="game-source"] {
+  display: block !important;
+  max-width: 100% !important;
+  color: #1a1516 !important;
+  font-size: clamp(20px, 1.9vw, 28px) !important;
+  line-height: 1.28 !important;
+  font-weight: 720 !important;
+  text-align: left !important;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .75);
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+.dream-skin-home [data-feature="game-source"]::before {
+  content: var(--dream-skin-name, "Dream Skin");
+  display: block;
+  margin-bottom: 8px;
+  color: #c93d4c;
+  font: 700 11px/1.3 "SF Pro Text", "PingFang SC", sans-serif;
+  letter-spacing: .08em;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .7);
+}
+
+.dream-skin-home [data-feature="game-source"]::after {
+  content: var(--dream-skin-tagline, "把喜欢的画面变成可交互的 Codex 工作台。");
+  display: block;
+  margin-top: 12px;
+  color: #3d3437;
+  font-size: 13px;
+  line-height: 1.5;
+  font-weight: 500;
+  letter-spacing: .01em;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .65);
+}
+
+.dream-skin-home [data-feature="game-source"] button {
+  margin: 0 4px;
+  padding: 2px 10px 3px;
+  border: 1px solid rgba(226, 85, 99, .28);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .72);
+  color: var(--ds-green) !important;
+  text-decoration-color: rgba(226, 85, 99, .45) !important;
+  text-underline-offset: 4px;
+  box-shadow: none;
+}
+
+.dream-skin-home [data-feature="game-source"] button::before {
+  content: var(--dream-skin-project-prefix, "选择项目 · ");
+  font-size: .48em;
+  font-weight: 650;
+  vertical-align: middle;
+  opacity: .8;
+}
+
+.dream-skin-home > div:first-child > div:first-child > div:first-child > div:nth-child(2) {
+  left: 14px !important;
+  right: 14px !important;
+  top: 100% !important;
+  margin-top: 14px !important;
+}
+
+.dream-skin-home .group\/home-suggestions { overflow: visible !important; }
+
+/* Suggestion cards: clean white tiles, soft rose icons */
+.dream-skin-home .group\/home-suggestions button {
+  position: relative !important;
+  min-height: 126px !important;
+  padding: 14px 13px 12px !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  text-align: center !important;
+  border: 1px solid rgba(40, 30, 32, .07) !important;
+  border-radius: 18px !important;
+  background: #ffffff !important;
+  color: var(--ds-text) !important;
+  font-weight: 600 !important;
+  line-height: 1.45 !important;
+  box-shadow: 0 8px 18px rgba(40, 20, 24, .05) !important;
+  transform: none;
+  transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease !important;
+}
+
+.dream-skin-home .group\/home-suggestions button:hover {
+  transform: translateY(-2px) !important;
+  border-color: rgba(226, 85, 99, .22) !important;
+  box-shadow: 0 12px 24px rgba(40, 20, 24, .08) !important;
+}
+
+.dream-skin-home .group\/home-suggestions button > span:first-child > span:first-child {
+  width: 38px;
+  height: 38px;
+  display: grid !important;
+  place-items: center;
+  margin: 0 auto;
+  border-radius: 50%;
+  color: #ffffff !important;
+  background: linear-gradient(145deg, #f07a86, #e25563);
+  box-shadow: 0 4px 10px rgba(226, 85, 99, .18);
+}
+.dream-skin-home .group\/home-suggestions button svg {
+  width: 20px !important;
+  height: 20px !important;
+  color: #ffffff !important;
+}
+.dream-skin-home .group\/home-suggestions button > span:first-child { justify-content: center !important; }
+.dream-skin-home .group\/home-suggestions button > span:last-child {
+  align-items: center !important;
+  text-align: center !important;
+  color: var(--ds-ink-soft) !important;
+}
+
+/* Composer: light glass, thin rose edge */
+html.codex-dream-skin .composer-surface-chrome {
+  border: 1px solid rgba(40, 30, 32, .08) !important;
+  border-radius: 20px !important;
+  background: rgba(255, 255, 255, .92) !important;
+  box-shadow: 0 10px 28px rgba(40, 20, 24, .07) !important;
+  backdrop-filter: blur(14px) saturate(110%) !important;
+  overflow: visible !important;
+}
+
+html.codex-dream-skin .composer-surface-chrome::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 18px;
+  bottom: 18px;
+  width: 3px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #f07a86, #e25563);
+  box-shadow: none;
+}
+
+.dream-skin-home div:has(> .horizontal-scroll-fade-mask .group\/project-selector) {
+  position: relative;
+  padding-top: 26px !important;
+  border: 1px solid rgba(40, 30, 32, .06);
+  border-bottom: 0;
+  background: rgba(255, 255, 255, .9) !important;
+}
+
+.dream-skin-home div:has(> .horizontal-scroll-fade-mask .group\/project-selector)::before {
+  content: var(--dream-skin-project-label, "◉  选择项目");
+  position: absolute;
+  left: 13px;
+  top: 6px;
+  z-index: 2;
+  color: #4a4144;
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: .06em;
+  white-space: nowrap;
+}
+
+.dream-skin-home .group\/project-selector > button {
+  border-color: rgba(40, 30, 32, .10) !important;
+  background: #ffffff !important;
+  color: #1f1a1b !important;
+  box-shadow: 0 2px 8px rgba(40, 20, 24, .04) !important;
+}
+
+.dream-skin-home .group\/project-selector > button,
+.dream-skin-home .group\/project-selector > button * {
+  color: #1f1a1b !important;
+  opacity: 1 !important;
+}
+
+html.codex-dream-skin .ProseMirror {
+  color: #1f1a1b !important;
+  caret-color: #d94856 !important;
+}
+
+html.codex-dream-skin .ProseMirror p.is-empty::before,
+html.codex-dream-skin .ProseMirror .is-editor-empty::before,
+html.codex-dream-skin [data-placeholder] {
+  color: #7a6e71 !important;
+  opacity: 1 !important;
+}
+
+/* Catch remaining washed-out text tokens in light shell */
+html.codex-dream-skin main.main-surface,
+html.codex-dream-skin main.main-surface button,
+html.codex-dream-skin main.main-surface span {
+  --tw-text-opacity: 1;
+}
+
+html.codex-dream-skin button[class~="bg-token-foreground"] {
+  background: linear-gradient(145deg, #f07a86, #e25563) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(226, 85, 99, .22) !important;
+}
+
+html.codex-dream-skin article,
+html.codex-dream-skin [data-message-author-role] { border-radius: 16px; }
+
+@keyframes ds-float {
+  0%, 100% { transform: translate3d(0, 0, 0); opacity: .4; }
+  50% { transform: translate3d(2px, -4px, 0); opacity: .85; }
+}
+
+@media (max-width: 1120px) {
+  .dream-skin-quote { display: none !important; }
+  .dream-skin-home { --thread-content-max-width: min(860px, calc(100cqw - 30px)) !important; }
+  .dream-skin-home > div:first-child > div:first-child > div:first-child {
+    width: calc(100% - 28px) !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .dream-skin-status { display: none !important; }
+  .dream-skin-brand { left: 14px; }
+  .dream-skin-brand b { font-size: 12px; }
+  .dream-skin-home > div:first-child > div:first-child {
+    flex-basis: 396px !important;
+    min-height: 396px !important;
+  }
+  .dream-skin-home > div:first-child > div:first-child > div:first-child {
+    height: 224px !important;
+    min-height: 224px !important;
+  }
+  .dream-skin-home > div:first-child > div:first-child > div:first-child > div:first-child {
+    padding-left: 24px;
+  }
+  .dream-skin-home > div:first-child > div:first-child > div:first-child > div:first-child > div:first-child {
+    width: 64% !important;
+  }
+  .dream-skin-home [data-feature="game-source"] { font-size: 18px !important; }
+  .dream-skin-home [data-feature="game-source"]::before { font-size: 10px; margin-bottom: 6px; }
+  .dream-skin-home [data-feature="game-source"]::after { font-size: 12px; margin-top: 8px; }
+  .dream-skin-home .group\/home-suggestions button {
+    min-height: 114px !important;
+    font-size: 12px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dream-skin-particles i { animation: none !important; }
+}
