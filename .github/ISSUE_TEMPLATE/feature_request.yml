@@ -9,8 +9,8 @@ body:
         Share an idea that fits this project’s scope: **external theming** for Codex Desktop via loopback CDP — not API relays, not patching the official app.
         欢迎提建议。本项目范围是：通过 **本机 CDP** 给 Codex 桌面端做 **外部换肤**，不包含中转配置、不修改官方安装包。
 
-        Please check [README](https://github.com/Fei-Away/Codex-Dream-Skin/blob/main/README.md) and [CHANGELOG](https://github.com/Fei-Away/Codex-Dream-Skin/blob/main/macos/CHANGELOG.md) first.
-        提交前可先看 README 与 CHANGELOG，避免重复已有能力。
+        Please check the [one-shot workflow](https://github.com/UltraDD/Codex-Dream-Skin/blob/main/docs/one-shot-skin-workflow.md), [README](https://github.com/UltraDD/Codex-Dream-Skin/blob/main/README.md), and [CHANGELOG](https://github.com/UltraDD/Codex-Dream-Skin/blob/main/macos/CHANGELOG.md) first.
+        提交前可先看一次成功工作流、README 与 CHANGELOG，避免把效果图、悬浮组件或素材包误报成同一种需求。
 
   - type: dropdown
     id: platform
@@ -31,6 +31,21 @@ body:
       label: Summary / 一句话概括
       description: Short title-style summary / 简短概括你想要的能力
       placeholder: "e.g. Export / import theme packs · 支持主题包导入导出"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: request_type
+    attributes:
+      label: Request type / 需求类型
+      description: These are separate deliverables with different safety and release requirements. / 不同类型的实现与发行边界不同。
+      options:
+        - Visual skin behavior / 视觉皮肤行为
+        - Install, launch, verify, or restore workflow / 安装、启动、校验或恢复流程
+        - Theme import, save, switch, or preset packaging / 主题导入、保存、切换或预设打包
+        - Preview or documentation / 效果预览或文档
+        - Floating component or pet (out of current scope) / 悬浮组件或桌宠（当前范围外）
+        - Unsure / 不确定
     validations:
       required: true
 

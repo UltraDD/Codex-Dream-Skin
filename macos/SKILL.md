@@ -10,10 +10,11 @@ This file is an optional Codex capability entry. The delivery is a complete stan
 
 ## Workflow
 
-1. Run `Install Codex Dream Skin.command` from the complete project folder.
-2. Run `Customize Codex Dream Skin.command`, choose an image in Finder, and enter a theme name.
-3. Verify the live result with `Verify Codex Dream Skin.command`. A pass requires a visible native sidebar and composer, no horizontal overflow, non-interactive decoration, and—on the home route—a continuous wallpaper with live native heading, project controls, and any suggestion cards exposed by the current Codex version.
-4. Restore the official appearance with `Restore Codex Dream Skin.command`.
+1. Classify the request and establish the brief in `../docs/one-shot-skin-workflow.md`. Unless explicitly requested otherwise, build a visual skin—not a pet, floating component, fake UI mockup, or public preset pack.
+2. Run `Install Codex Dream Skin.command` from the complete project folder.
+3. Run `Customize Codex Dream Skin.command`, choose an image in Finder, and enter a theme name.
+4. Verify the live result with `Verify Codex Dream Skin.command`. A pass requires a visible native sidebar and composer, no horizontal overflow, non-interactive decoration, and—on the home route—a continuous wallpaper with live native heading, project controls, and any suggestion cards exposed by the current Codex version.
+5. Restore the official appearance with `Restore Codex Dream Skin.command`.
 
 ## Guardrails
 
@@ -21,6 +22,7 @@ This file is an optional Codex capability entry. The delivery is a complete stan
 - Use the official Codex app's signed Node.js runtime only after validating its signature, Team ID, architecture, and minimum version.
 - Bind CDP to loopback, verify that the listener belongs to Codex, and reject non-Codex renderer targets.
 - Preserve all native cards, navigation, project selectors, task content, composer controls, and keyboard focus.
+- Never add a pet, avatar, floating character, independent button/card, or global decoration merely because the theme subject is a character. Those are separate products and require explicit scope.
 - Theme images must be UI-free wallpapers. Paint one 16:9 image continuously across the window; keep home expressive and task routes quieter. `appearance: auto` follows Codex/native or system appearance rather than image brightness.
 - Keep decoration at `pointer-events: none`.
 - Require explicit authorization before restarting an already-running Codex instance.

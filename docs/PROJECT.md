@@ -1,7 +1,7 @@
 # Codex Dream Skin · 项目记录
 
-> 本地归档说明。面向维护者，不是用户安装手册。  
-> 仓库首页：[`../README.md`](../README.md)（中文）· [`../README.en.md`](../README.en.md)（English）  
+> 本地归档说明。面向维护者，不是用户安装手册。
+> 仓库首页：[`../README.md`](../README.md)（中文）· [`../README.en.md`](../README.en.md)（English）
 > GitHub：https://github.com/Fei-Away/Codex-Dream-Skin
 
 ---
@@ -24,11 +24,12 @@
 
 | 阶段 | 说明 |
 |------|------|
+| 素材包 | 微信传播的 Win / Mac 皮肤包（RAR/ZIP），含注入脚本与主题资源 |
 | 安全审 | 核对是否改 asar、是否静默劫持 API；结论：以本机 CDP 注入为主，开源时明确禁止静默中转劫持 |
-| 整理开源 | 按平台拆成 `macos/`、`windows/`，补 README 图库与安装入口 |
+| 整理开源 | 按平台拆成 `macos/`、`windows/`，补脱敏示例与安装入口 |
 | 本地美化 | Mac 本机引擎装在 `~/.codex/codex-dream-skin-studio`；CSS 走浅色壳 + 可选底部赞助 chip |
 | 赞助 | Passion8（`aff=TuPe`）写在 README 顶部；强调满血中转卖点，且与换肤配置隔离 |
-| 图库 | `docs/images/gallery/skin-01`～`08`；粉系定制 → 财神打工 → 红白科幻… |
+| 示例素材 | 只保留抽象背景、脱敏界面示例和已授权赞助标识 |
 | i18n | 默认中文 `README.md`，英文 `README.en.md`，顶部互链 |
 
 本地曾用过 `8765` 静态预览与临时 injector；**发布后不要求**常驻这两个进程。桌面快捷方式指向已安装引擎，不依赖本仓库路径。
@@ -60,9 +61,9 @@ Codex-Dream-Skin/
 ├── docs/
 │   ├── PROJECT.md         # 本文件（项目记录）
 │   ├── platforms.md       # Win/Mac 路径与能力矩阵
-│   ├── promo-copy.md      # 宣传文案（朋友圈等，注意肖像/IP）
+│   ├── promo-copy.md      # 宣传文案（朋友圈等，注意隐私和素材权利）
 │   └── images/
-│       ├── gallery/       # README 效果图 skin-01…08
+│       ├── screenshot-demo-art.png
 │       └── sponsor-passion8.png
 ├── macos/                 # Mac 脚本、资源、LICENSE、SKILL
 └── windows/               # Windows PowerShell / 注入脚本
@@ -96,10 +97,10 @@ Windows 状态目录见 `platforms.md`（`%LOCALAPPDATA%\CodexDreamSkin`）。
 
 ## 6. 安全与合规边界
 
-1. CDP **仅** `127.0.0.1`，主题运行期勿跑来路不明的本机程序  
-2. 不改官方安装目录与签名  
-3. **禁止**安装脚本静默写入第三方 Base URL / Key  
-4. 效果图含人物 / IP 时仅作主题示意；商用再分发需自行确认肖像与商标  
+1. CDP **仅** `127.0.0.1`，主题运行期勿跑来路不明的本机程序。
+2. 不改官方安装目录与签名。
+3. **禁止**安装脚本静默写入第三方 Base URL / Key。
+4. 公开仓库只分发抽象素材和脱敏截图；真人、角色、客户品牌与私人任务内容不得入库。
 5. 宣传文案见 `promo-copy.md`（避免未授权商业化表述）
 
 ---
@@ -107,8 +108,8 @@ Windows 状态目录见 `platforms.md`（`%LOCALAPPDATA%\CodexDreamSkin`）。
 ## 7. 赞助（Passion8）
 
 - 注册链：`https://passion8.cc/register?aff=TuPe`
-- README 调性：更智能的连接 / 满血 AI 中转 / 官方模型、无降智无套壳 / 一行接 Codex·Claude Code·Grok  
-- 固定声明：换肤与 API 配置互相独立  
+- README 调性：更智能的连接 / 满血 AI 中转 / 官方模型、无降智无套壳 / 一行接 Codex·Claude Code·Grok。
+- 固定声明：换肤与 API 配置互相独立。
 
 Logo 资源：`docs/images/sponsor-passion8.png`（及 svg）。
 
@@ -118,7 +119,7 @@ Logo 资源：`docs/images/sponsor-passion8.png`（及 svg）。
 
 | 动作 | 说明 |
 |------|------|
-| 换图库图 | 替换 `docs/images/gallery/skin-XX.jpg`，同步改 README 两份 caption |
+| 换公开示例 | 只使用抽象背景和脱敏任务内容，并同步更新中英文 README |
 | 改赞助文案 | 同时改 `README.md` 与 `README.en.md` |
 | 发版推送 | 在本仓库目录 `git add` → `commit` → `push origin main` |
 | Mac 本机主题 | 改 `~/.codex/codex-dream-skin-studio` 的 CSS/inject；与 GitHub 源码可不同步，属本机实验位 |

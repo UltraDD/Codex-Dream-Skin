@@ -53,7 +53,7 @@ try {
   $savedCodex = Get-DreamSkinCodexInstallFromState -State $state
   $candidateMatchesCurrent = [bool]($null -ne $savedPathCandidate -and $null -ne $currentCodex -and
     (Test-DreamSkinPathEqual -Left $savedPathCandidate.PackageRoot -Right $currentCodex.PackageRoot) -and
-    (Test-DreamSkinPathEqual -Left $savedPathCandidate.Executable -Right $currentCodex.Executable))
+    (Test-DreamSkinPathEqual -Left $savedPathCandidate.OfficialExecutable -Right $currentCodex.Executable))
   if ($null -ne $savedPathCandidate -and $null -eq $savedCodex -and -not $candidateMatchesCurrent) {
     $unverifiedSavedRunning = (Get-DreamSkinCodexProcesses -Codex $savedPathCandidate).Count -gt 0
     $unverifiedSavedOwnsPort = Test-DreamSkinCodexPortOwner -Port $Port -Codex $savedPathCandidate
@@ -164,13 +164,13 @@ try {
       if ($null -eq $relaunchCodex -or -not (Test-Path -LiteralPath $relaunchCodex.Executable)) {
         throw 'Codex cannot be reopened because its current executable is unavailable.'
       }
-      $null = Start-DreamSkinCodex -Codex $relaunchCodex
+      Start-DreamSkinCodexApplication -Codex $relaunchCodex | Out-Null
     }
   } catch {
     $restoreError = $_
     if ($shouldCloseCodex -and -not $NoRelaunch -and $null -ne $relaunchCodex -and
       (Get-DreamSkinCodexProcesses -Codex $codex).Count -eq 0 -and (Test-Path -LiteralPath $relaunchCodex.Executable)) {
-      try { $null = Start-DreamSkinCodex -Codex $relaunchCodex } catch {
+      try { Start-DreamSkinCodexApplication -Codex $relaunchCodex | Out-Null } catch {
         Write-Warning 'Restore failed and Codex could not be reopened automatically.'
       }
     }

@@ -14,8 +14,8 @@ body:
         - **Windows:** `scripts/verify-dream-skin.ps1`, then `scripts/restore-dream-skin.ps1` if you need a clean slate.
         - Search existing issues / 先搜一下是否已有相同 Issue。
 
-        **Do not paste / 请勿粘贴：** API keys, `auth.json`, relay tokens, private chat content.
-        **不要贴：** API Key、`auth.json`、中转密钥、隐私对话内容。
+        **Do not paste / 请勿粘贴：** API keys, `auth.json`, relay tokens, private chat content, local runtime files, or unredacted account/task names.
+        **不要贴：** API Key、`auth.json`、中转密钥、隐私对话、本机 runtime，以及未打码的账号或任务名称。
 
         This project only themes via **loopback CDP**. It does **not** modify official `.app` / `app.asar` / WindowsApps, and does **not** rewrite API Base URL / keys.
         本项目仅通过 **本机回环 CDP** 换肤，**不修改**官方安装包与签名，**不会**改写 API Base URL / Key。
@@ -110,6 +110,21 @@ body:
         - label: Searched existing issues / 已搜索现有 Issue
           required: false
 
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Affected surface / 出问题的位置
+      options:
+        - New task / home page / 新建任务页
+        - Normal task / conversation / 普通任务页
+        - Composer / input box / 输入框
+        - Sidebar or navigation / 侧栏或导航
+        - Install, launch, tray, or restore / 安装、启动、托盘或恢复
+        - Multiple surfaces / 多个位置
+        - Unsure / 不确定
+    validations:
+      required: true
+
   - type: textarea
     id: steps
     attributes:
@@ -169,7 +184,7 @@ body:
     id: screenshots
     attributes:
       label: Screenshots / video / 截图或录屏
-      description: Drag images here. Avoid private chat content. / 可直接拖拽图片；避免隐私对话内容。
+      description: Drag images here only after redacting account names, task titles, chats, and local paths. / 请先遮住账号、任务标题、聊天内容和本机路径，再上传图片。
       placeholder: "Attach below / 在下方附加"
     validations:
       required: false
@@ -188,6 +203,8 @@ body:
       label: Confirmation / 确认
       options:
         - label: I did not paste API keys or secrets / 我未粘贴 API Key 或其它密钥
+          required: true
+        - label: Any screenshot or log I attached has been redacted / 我附加的截图与日志已经脱敏
           required: true
         - label: I understand this is an unofficial theme tool (loopback CDP only) / 我理解这是非官方换肤工具（仅本机 CDP）
           required: true

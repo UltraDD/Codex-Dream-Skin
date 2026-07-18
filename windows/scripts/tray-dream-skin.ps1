@@ -43,7 +43,7 @@ try {
   function Start-DreamSkinPowerShell {
     param([Parameter(Mandatory = $true)][string]$Script, [string[]]$Arguments = @())
     $scriptToken = ConvertTo-DreamSkinProcessArgument -Value $Script
-    $argumentLine = '-NoProfile -ExecutionPolicy RemoteSigned -File ' + $scriptToken
+    $argumentLine = '-NoProfile -ExecutionPolicy Bypass -File ' + $scriptToken
     if ($Arguments.Count -gt 0) { $argumentLine += ' ' + ($Arguments -join ' ') }
     Start-Process -FilePath $powershell -ArgumentList $argumentLine | Out-Null
   }

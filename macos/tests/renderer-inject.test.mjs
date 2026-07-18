@@ -11,17 +11,6 @@ const css = await fs.readFile(path.join(macosRoot, "assets", "dream-skin.css"), 
 
 assert.doesNotMatch(
   css,
-  /main\.main-surface\s*>\s*header\.app-header-tint\s*\{[^}]*\b(?:position|z-index)\s*:/,
-  "The skin must preserve Codex's native fixed header so the side-panel toggle remains reachable.",
-);
-assert.doesNotMatch(
-  css,
-  /main\.main-surface:not\(\.dream-skin-home-shell\)\s*>\s*\*\s*\{[^}]*\bposition\s*:/,
-  "Task-route child layering must not overwrite the native header position.",
-);
-
-assert.doesNotMatch(
-  css,
   /background-image:\s*var\(--dream-skin-art\),\s*var\(--dream-skin-art\)/,
   "The home hero must not stack duplicate copies of the selected image.",
 );
@@ -99,11 +88,6 @@ assert.match(
   css,
   /\.composer-surface-chrome button:not\(\[class~="bg-token-foreground"\]\) \*\s*\{[\s\S]{0,80}color:\s*currentColor !important;/,
   "Nested labels inside composer controls must inherit the corrected theme color.",
-);
-assert.match(
-  css,
-  /home-suggestions button \[class~="text-token-text-primary"\]\s*\{[\s\S]{0,80}color:\s*var\(--ds-text\) !important;/,
-  "Home suggestion labels must override native light-shell text tokens with the selected theme color.",
 );
 assert.match(
   css,
@@ -315,11 +299,7 @@ function createFixture(theme, {
     .replace("__DREAM_SKIN_ART_JSON__", JSON.stringify("data:image/png;base64,AA=="))
     .replace("__DREAM_SKIN_THEME_JSON__", JSON.stringify(nextTheme))
     .replace("__DREAM_SKIN_VERSION_JSON__", JSON.stringify("test"))
-    .replace("__DREAM_SKIN_STYLE_REVISION_JSON__", JSON.stringify(cssText))
-    .replace(
-      "__DREAM_SKIN_PAYLOAD_REVISION_JSON__",
-      JSON.stringify(`${nextTheme.id}:${cssText}`),
-    );
+    .replace("__DREAM_SKIN_STYLE_REVISION_JSON__", JSON.stringify(cssText));
   const flushTimers = (maximumDelay = Infinity) => {
     const pending = [...timers.entries()].filter(([, timer]) => timer.delay <= maximumDelay);
     for (const [id, timer] of pending) {

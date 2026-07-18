@@ -88,18 +88,6 @@ function Write-DreamSkinUtf8FileAtomically {
   }
 }
 
-function Remove-DreamSkinAtomicArtifact {
-  [CmdletBinding()]
-  param(
-    [Parameter(Mandatory = $true)]
-    [string]$Path
-  )
-
-  if ([System.IO.File]::Exists($Path)) {
-    [System.IO.File]::Delete($Path)
-  }
-}
-
 function Write-DreamSkinBytesAtomically {
   [CmdletBinding()]
   param(
@@ -114,9 +102,8 @@ function Write-DreamSkinBytesAtomically {
     [System.IO.Directory]::CreateDirectory($directory) | Out-Null
   }
   $fileName = [System.IO.Path]::GetFileName($fullPath)
-  $operationId = "$PID.$([guid]::NewGuid().ToString('N'))"
-  $temporary = Join-Path $directory ".$fileName.$operationId.tmp"
-  $replacementBackup = Join-Path $directory ".$fileName.$operationId.replace-backup"
+  $temporary = Join-Path $directory ".$fileName.$PID.$([guid]::NewGuid().ToString('N')).tmp"
+  $replacementBackup = Join-Path $directory ".$fileName.$PID.$([guid]::NewGuid().ToString('N')).bak"
 
   try {
     [System.IO.File]::WriteAllBytes($temporary, $Bytes)
@@ -125,21 +112,13 @@ function Write-DreamSkinBytesAtomically {
     }
     if ([System.IO.File]::Exists($fullPath)) {
       [System.IO.File]::Replace($temporary, $fullPath, $replacementBackup)
+      [System.IO.File]::Delete($replacementBackup)
     } else {
       [System.IO.File]::Move($temporary, $fullPath)
     }
   } finally {
-    foreach ($artifact in @($temporary, $replacementBackup)) {
-      try {
-        Remove-DreamSkinAtomicArtifact -Path $artifact
-      } catch {
-        try {
-          Write-Warning "Could not remove temporary atomic config artifact '$artifact': $($_.Exception.Message)"
-        } catch {
-          # Cleanup must never mask the result of the atomic write.
-        }
-      }
-    }
+    if ([System.IO.File]::Exists($temporary)) { [System.IO.File]::Delete($temporary) }
+    if ([System.IO.File]::Exists($replacementBackup)) { [System.IO.File]::Delete($replacementBackup) }
   }
 }
 
@@ -194,7 +173,7 @@ function Assert-DreamSkinTomlLineEditingSafe {
   if ($Content.Contains('"""') -or $Content.Contains("'''")) {
     throw 'Refusing to rewrite TOML containing multiline strings; use single-line values before installing Dream Skin.'
   }
-  foreach ($match in [regex]::Matches($Content, '(?m)^[^\r\n]*=[\t ]*\[[^\r\n]*\r?$')) {
+  foreach ($match in [regex]::Matches($Content, '(?m)^[^\r\n]*=[\t ]*\[[^\r\n]*(?=\r?$)')) {
     if ((Get-DreamSkinTomlArrayBracketBalance -Line $match.Value) -ne 0) {
       throw 'Refusing to rewrite TOML containing multiline arrays; use single-line arrays before installing Dream Skin.'
     }
@@ -217,20 +196,6 @@ function Get-DreamSkinDesktopSectionPattern {
   return "(?ms)^[\t ]*\[[\t ]*$desktopToken[\t ]*\][\t ]*(?:#[^\r\n]*)?(?:\r?\n|(?=\z))(?<body>.*?)(?=^[\t ]*\[\[?|\z)"
 }
 
-function Test-DreamSkinDesktopNestedTable {
-  param(
-    [Parameter(Mandatory = $true)][AllowEmptyString()][string]$Content,
-    [Parameter(Mandatory = $true)][string]$Key
-  )
-
-  $desktopToken = Get-DreamSkinTomlKeyTokenPattern -Key 'desktop'
-  $keyToken = Get-DreamSkinTomlKeyTokenPattern -Key $Key
-  return [regex]::IsMatch(
-    $Content,
-    "(?m)^[\t ]*\[[\t ]*$desktopToken[\t ]*\.[\t ]*$keyToken[\t ]*(?:\]|\.)"
-  )
-}
-
 function Assert-DreamSkinDesktopShapeSupported {
   param([Parameter(Mandatory = $true)][AllowEmptyString()][string]$Content)
 
@@ -241,13 +206,11 @@ function Assert-DreamSkinDesktopShapeSupported {
   }
 
   $desktopToken = Get-DreamSkinTomlKeyTokenPattern -Key 'desktop'
-  if ([regex]::IsMatch($Content, "(?m)^[\t ]*\[\[[\t ]*$desktopToken[\t ]*(?:\]\]|\.)")) {
+  if ([regex]::IsMatch($Content, "(?m)^[\t ]*\[\[[\t ]*$desktopToken[\t ]*\]\]")) {
     throw 'Refusing to rewrite a config that represents desktop as an array of tables.'
   }
-  foreach ($key in @('appearanceTheme', 'appearanceLightCodeThemeId')) {
-    if (Test-DreamSkinDesktopNestedTable -Content $Content -Key $key) {
-      throw "Refusing to replace '$key' because it is represented as a nested desktop table."
-    }
+  if ([regex]::IsMatch($Content, "(?m)^[\t ]*\[\[?[\t ]*$desktopToken[\t ]*\.")) {
+    throw 'Refusing to rewrite nested desktop tables; normalize them to a single [desktop] table first.'
   }
 
   $firstTable = [regex]::Match($Content, '(?m)^[\t ]*\[\[?')
@@ -262,11 +225,6 @@ function Assert-DreamSkinDesktopShapeSupported {
     foreach ($key in @('appearanceTheme', 'appearanceLightCodeThemeId', 'appearanceLightChromeTheme')) {
       $keyToken = Get-DreamSkinTomlKeyTokenPattern -Key $key
       $settingShape = "(?m)^[\t ]*$keyToken[\t ]*(?:\.|=)"
-      if ($key -eq 'appearanceLightChromeTheme' -and
-        (Test-DreamSkinDesktopNestedTable -Content $Content -Key $key) -and
-        [regex]::IsMatch($desktop.Body, $settingShape)) {
-        throw "Refusing to rewrite '$key' because both a scalar and nested table are present."
-      }
       if ([regex]::Matches($bodyProbe, $settingShape).Count -gt
         [regex]::Matches($desktop.Body, $settingShape).Count) {
         throw "Refusing to rewrite an escaped TOML key equivalent to '$key'."
@@ -307,12 +265,12 @@ function Set-DreamSkinSectionSetting {
   param(
     [Parameter(Mandatory = $true)][AllowEmptyString()][string]$Body,
     [Parameter(Mandatory = $true)][string]$Key,
-    [AllowNull()][object]$Line,
+    [AllowNull()][string]$Line,
     [Parameter(Mandatory = $true)][string]$NewLine
   )
 
   $keyToken = Get-DreamSkinTomlKeyTokenPattern -Key $Key
-  $pattern = "(?m)^[\t ]*$keyToken[\t ]*=[^\r\n]*(?:\r?\n|(?=\z))"
+  $pattern = "(?m)^[\t ]*$keyToken[\t ]*=.*(?:\r?\n)?"
   $matcher = [regex]::new($pattern)
   if ($matcher.Matches($Body).Count -gt 1) {
     throw "Refusing to rewrite duplicate '$Key' entries in the [desktop] section."
@@ -439,10 +397,7 @@ function Install-DreamSkinBaseTheme {
       appearanceLightCodeThemeId = $script:DreamSkinManagedLightCodeTheme
       appearanceLightChromeTheme = $script:DreamSkinManagedLightChromeTheme
     }
-    $hasNestedLightChromeTheme = Test-DreamSkinDesktopNestedTable `
-      -Content $content -Key 'appearanceLightChromeTheme'
     foreach ($key in $settings.Keys) {
-      if ($key -eq 'appearanceLightChromeTheme' -and $hasNestedLightChromeTheme) { continue }
       $body = Set-DreamSkinSectionSetting -Body $body -Key $key -Line $settings[$key] -NewLine $newLine
     }
 
@@ -494,15 +449,15 @@ function Restore-DreamSkinBaseTheme {
     (Test-DreamSkinLegacyManagedLightTrio -Content $currentContent)
   $restoreKeys = @('appearanceLightCodeThemeId', 'appearanceLightChromeTheme')
   if ($restoreLegacyAppearance) { $restoreKeys = @('appearanceTheme') + $restoreKeys }
-  $hasNestedLightChromeTheme = Test-DreamSkinDesktopNestedTable `
-    -Content $currentContent -Key 'appearanceLightChromeTheme'
   foreach ($key in $restoreKeys) {
-    if ($key -eq 'appearanceLightChromeTheme' -and $hasNestedLightChromeTheme) { continue }
     $keyToken = Get-DreamSkinTomlKeyTokenPattern -Key $key
-    $pattern = "(?m)^[\t ]*$keyToken[\t ]*=[^\r\n]*(?:\r?\n|(?=\z))"
+    $pattern = "(?m)^[\t ]*$keyToken[\t ]*=.*(?:\r?\n)?"
     $saved = if ($null -ne $backupDesktop) { [regex]::Match($backupDesktop.Body, $pattern) } else { $null }
     $line = if ($null -ne $saved -and $saved.Success) { $saved.Value } else { $null }
     $body = Set-DreamSkinSectionSetting -Body $body -Key $key -Line $line -NewLine $newLine
+  }
+  if ($null -ne $backupDesktop -and $body -ceq ($backupDesktop.Body + $newLine)) {
+    $body = $backupDesktop.Body
   }
   if ($null -eq $backupDesktop -and [string]::IsNullOrWhiteSpace($body)) {
     $currentContent = $currentContent.Remove($currentDesktop.SectionStart, $currentDesktop.SectionLength)
